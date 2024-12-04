@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 const { job } = Astro.props;
 const formattedContent = formatJobContent(job.post_content);
 const cleanDescription = stripHtml(job.post_content);
-const baseUrl = 'https://lucky-madeleine-4437d9.netlify.app';
+const baseUrl = 'https://remotejobsusa.netlify.app';
 
 // Calculate validThrough date (30 days from now)
 const validThrough = new Date();
