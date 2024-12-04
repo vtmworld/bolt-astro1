@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import JobCard from '../components/JobCard.astro';
+import Pagination from '../components/Pagination.astro';
+import { jobs } from '../data/jobs.json';
+
+const JOBS_PER_PAGE = 5;
+const totalPages = Math.ceil(jobs.length / JOBS_PER_PAGE);
+const currentPage = 1;
+const currentJobs = jobs.slice(0, JOBS_PER_PAGE);
+---
+
+<Layout title="Job Board - Latest Opportunities">
+  <h1 class="page-title">Latest Job Opportunities</h1>
+  
+  <div class="jobs-grid">
+    {currentJobs.map((job) => <JobCard job={job} />)}
+  </div>
+
+  <Pagination
+    currentPage={currentPage}
+    totalPages={totalPages}
+    baseUrl="/page"
+  />
+</Layout>
+
+<style>
+  .page-title {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+  }
+
+  .jobs-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+</style>

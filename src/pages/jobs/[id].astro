@@ -1,0 +1,163 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { jobs } from '../../data/jobs.json';
+import { formatJobContent, stripHtml } from '../../utils/formatJobContent';
+import '../../styles/job-content.css';
+
+export async function getStaticPaths() {
+  return jobs.map((job) => ({
+    params: { id: job.ID },
+    props: { job },
+  }));
+}
+
+const { job } = Astro.props;
+const formattedContent = formatJobContent(job.post_content);
+const cleanDescription = stripHtml(job.post_content);
+const baseUrl = 'https://lucky-madeleine-4437d9.netlify.app';
+
+// Calculate validThrough date (30 days from now)
+const validThrough = new Date();
+validThrough.setDate(validThrough.getDate() + 30);
+
+// Google Job Posting Schema
+const jobSchema = {
+  "@context": "https://schema.org/",
+  "@type": "JobPosting",
+  "title": job.post_title,
+  "description": cleanDescription,
+  "datePosted": job.post_date,
+  "validThrough": validThrough.toISOString(),
+  "employmentType": "PART_TIME",
+  "hiringOrganization": {
+    "@type": "Organization",
+    "name": "wfhjob",
+    "sameAs": baseUrl,
+    "logo": `${baseUrl}/favicon.svg`
+  },
+  "jobLocation": {
+    "@type": "Place",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "-",
+      "addressLocality": "-",
+      "addressRegion": "-",
+      "postalCode": "-",
+      "addressCountry": "US"
+    }
+  },
+  "jobLocationType": "TELECOMMUTE",
+  "applicantLocationRequirements": {
+    "@type": "Country",
+    "name": "US"
+  },
+  "baseSalary": {
+    "@type": "MonetaryAmount",
+    "currency": "USD",
+    "value": {
+      "@type": "QuantitativeValue",
+      "value": "Not Disclosed by Recruiter",
+      "unitText": "MONTHLY"
+    }
+  },
+  "identifier": {
+    "@type": "PropertyValue",
+    "name": "Job ID",
+    "value": job.ID
+  },
+  "url": `${baseUrl}/jobs/${job.ID}`
+};
+---
+
+<Layout 
+  title={job.post_title}
+  description={cleanDescription.slice(0, 155)}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jobSchema)} />
+  
+  <article class="job-details">
+    <header class="job-header">
+      <h1>{job.post_title}</h1>
+      <div class="job-meta">
+        <time datetime={job.post_date}>
+          Posted on {new Date(job.post_date).toLocaleDateString()}
+        </time>
+        <span class="job-type">Part Time</span>
+        <span class="job-location">Remote - US</span>
+      </div>
+    </header>
+
+    <div class="job-content" set:html={formattedContent} />
+
+    <footer class="job-footer">
+      <a href={job.permalink} class="apply-button" target="_blank" rel="noopener noreferrer">Apply Now</a>
+      <a href="/" class="back-link">← Back to Jobs</a>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  .job-details {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .job-header {
+    margin-bottom: 2rem;
+  }
+
+  .job-header h1 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+
+  .job-meta {
+    color: #666;
+    font-size: 0.875rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .job-type, .job-location {
+    background: #f3f4f6;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    color: #4b5563;
+  }
+
+  .job-footer {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .apply-button {
+    background: #4f46e5;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s ease;
+  }
+
+  .apply-button:hover {
+    background: #4338ca;
+  }
+
+  .back-link {
+    color: #4a5568;
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+</style>

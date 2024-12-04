@@ -1,0 +1,80 @@
+---
+interface Props {
+  job: {
+    ID: string;
+    post_title: string;
+    post_date: string;
+    post_content: string;
+    permalink: string;
+  };
+}
+
+const { job } = Astro.props;
+---
+
+<article class="job-card">
+  <h2 class="job-title">
+    <a href={`/jobs/${job.ID}`}>{job.post_title}</a>
+  </h2>
+  <div class="job-meta">
+    <time datetime={job.post_date}>
+      {new Date(job.post_date).toLocaleDateString()}
+    </time>
+  </div>
+  <p class="job-excerpt">
+    {job.post_content.slice(0, 150)}...
+  </p>
+  <a href={`/jobs/${job.ID}`} class="read-more">View Details</a>
+</article>
+
+<style>
+  .job-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    margin-bottom: 1rem;
+  }
+
+  .job-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .job-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+  }
+
+  .job-title a {
+    color: #2c3e50;
+    text-decoration: none;
+  }
+
+  .job-meta {
+    color: #666;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .job-excerpt {
+    color: #4a5568;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .read-more {
+    display: inline-block;
+    background: #4f46e5;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: background 0.2s ease;
+  }
+
+  .read-more:hover {
+    background: #4338ca;
+  }
+</style>
