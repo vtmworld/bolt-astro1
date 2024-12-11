@@ -4,7 +4,7 @@ import { jobs } from '../data/jobs.json';
 
 
 export async function GET() {
-  const baseUrl = 'https://remotejobsusa.netlify.app';
+  const baseUrl = 'https://remotejobsusa1.vercel.app';
   
   const jobUrls = jobs.map(job => ({
     url: `${baseUrl}/jobs/${job.ID}`,
