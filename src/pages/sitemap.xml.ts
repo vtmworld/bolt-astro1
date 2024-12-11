@@ -1,7 +1,10 @@
-import { jobs } from '../data/jobs.json';
+//import { jobs } from '../data/jobs.json';
+
+import { jobs } from 'https://wfhjobus.com/jobs.json';
+
 
 export async function GET() {
-  const baseUrl = 'https://lucky-madeleine-4437d9.netlify.app';
+  const baseUrl = 'https://remotejobsusa.netlify.app';
   
   const jobUrls = jobs.map(job => ({
     url: `${baseUrl}/jobs/${job.ID}`,
