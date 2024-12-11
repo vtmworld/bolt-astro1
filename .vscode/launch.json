@@ -1,11 +1,3 @@
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "command": "./node_modules/.bin/astro dev",
-      "name": "Development server",
-      "request": "launch",
-      "type": "node-terminal"
-    }
-  ]
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:6e6dfbc6fd1dbbe9659a7a0a78515c9a47547408f74b7b9b5075b2434984cee8
+size 218
