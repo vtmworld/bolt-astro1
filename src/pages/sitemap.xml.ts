@@ -1,6 +1,6 @@
-//import { jobs } from '../data/jobs.json';
+import { jobs } from '../data/jobs.json';
 
-import { jobs } from 'https://wfhjobus.com/jobs.json';
+//import { jobs } from 'https://wfhjobus.com/jobs.json';
 
 
 export async function GET() {
