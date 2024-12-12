@@ -4,7 +4,7 @@ import Pagination from '../../components/Pagination.astro';
 import { jobs } from '../../data/jobs.json';
 
 export async function getStaticPaths() {
-  const JOBS_PER_PAGE = 10; // Load 10 jobs per page
+  const JOBS_PER_PAGE = 5;
   const totalPages = Math.ceil(jobs.length / JOBS_PER_PAGE);
 
   return Array.from({ length: totalPages }, (_, i) => {
@@ -26,22 +26,18 @@ export async function getStaticPaths() {
 const { currentJobs, currentPage, totalPages } = Astro.props;
 ---
 
-<Layout title={`Job Board - Page ${currentPage}`}>
+<Layout title={Job Board - Page ${currentPage}}>
   <h1 class="page-title">Job Opportunities - Page {currentPage}</h1>
   
   <div class="jobs-grid">
     {currentJobs.map((job) => <JobCard job={job} />)}
   </div>
 
-  <div class="pagination-buttons">
-    {currentPage > 1 && (
-      <a href={`/page/${currentPage - 1}`} class="pagination-btn">Previous</a>
-    )}
-
-    {currentPage < totalPages && (
-      <a href={`/page/${currentPage + 1}`} class="pagination-btn">Next</a>
-    )}
-  </div>
+  <Pagination
+    currentPage={currentPage}
+    totalPages={totalPages}
+    baseUrl="/page"
+  />
 </Layout>
 
 <style>
@@ -55,24 +51,5 @@ const { currentJobs, currentPage, totalPages } = Astro.props;
     display: grid;
     gap: 1.5rem;
     margin-bottom: 2rem;
-  }
-
-  .pagination-buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .pagination-btn {
-    background-color: #3498db;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-  }
-
-  .pagination-btn:hover {
-    background-color: #2980b9;
   }
 </style>
